@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import styles from './styles/Home.module.css'
+import styles from '@/styles/Home.module.css'
+import { Button, Icon } from 'semantic-ui-react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,7 +37,26 @@ export default function Home() {
                 priority
               />
             </a>
+            <Button>Click Here</Button>
           </div>
+        </div>
+        <div>
+          <Button animated>
+            <Button.Content visible>Next</Button.Content>
+            <Button.Content hidden>
+              <Icon name='arrow right' />
+            </Button.Content>
+          </Button>
+          <Button animated='vertical'>
+            <Button.Content hidden>Shop</Button.Content>
+            <Button.Content visible>
+              <Icon name='shop' />
+            </Button.Content>
+          </Button>
+          <Button animated='fade'>
+            <Button.Content visible>Sign-up for a Pro account</Button.Content>
+            <Button.Content hidden>$12.99 a month</Button.Content>
+          </Button>
         </div>
 
         <div className={styles.center}>
