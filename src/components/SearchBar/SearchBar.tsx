@@ -1,65 +1,59 @@
-import React, { useState } from 'react'
-import { Search, Grid, Header, Segment } from 'semantic-ui-react'
+import React, { useRef, useState } from 'react'
+import { Search, Grid, SearchResultData, SearchProps } from 'semantic-ui-react'
 import styles from './SearchBar.module.scss';
 
-const source = [{
-  title: "faker.company.companyName()",
-}]
+type SearchResultType = {
+  title: string
+}
+
+type SearchBarProps = {
+  loading?: boolean,
+  value?: string,
+  onSearchChange?: (event: React.MouseEvent, data: SearchProps) => void,
+  results?: SearchResultType[],
+  onResultSelect?: (event: React.MouseEvent, data: SearchResultData) => void,
+  placeholder?: string,
+  onSearch: (event: React.KeyboardEvent | React.MouseEvent, results: SearchResultType[]) => void
+}
 
 export default function SearchBar({
-  placeholder=""
-}: {
-  placeholder?: string
-}) {
+  loading = false,
+  value = '',
+  onSearchChange = () => { return },
+  results = [],
+  onResultSelect = () => { return },
+  placeholder = "",
+  onSearch = () => { }
+}: SearchBarProps) {
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [value, setValue] = useState('');
-  const [results, setResults] = useState<any>([]);
-
-  const handleResultSelect = (e: any, { result }: { result: { title: string } }) => {
-    setValue(result.title)
-  }
-
-  const handleSearchChange = (e: any, { value: currentVal }: any) => {
-    setIsLoading(true);
-    setValue(currentVal);
-
-    setTimeout(() => {
-      if (value.length < 1) {
-        setIsLoading(false);
-        setResults([]);
-        return
-      }
-      setIsLoading(false);
-      setResults(() => source.filter((s) => s.title.includes(value)));
-    }, 300)
-  }
+  const searchRef = useRef<any>();
 
   return (<Grid>
     <Grid.Column width={16}>
       <Search
+        ref={searchRef}
         className={styles.searchBar}
         fluid
         size='big'
-        loading={isLoading}
-        onResultSelect={handleResultSelect}
-        onSearchChange={handleSearchChange}
+        loading={loading}
+        onSearchChange={onSearchChange}
+        onResultSelect={onResultSelect}
         results={results}
         value={value}
         placeholder={placeholder}
+        showNoResults={!loading}
+        onBlur={(event) => {
+          onSearch(event, results)
+        }}
+        input={{
+          onKeyPress: (event: React.KeyboardEvent) => {
+            if (event.key === 'Enter' && searchRef.current) {
+              onSearch(event, results)
+              searchRef.current.close()
+            }
+          }
+        }}
       />
     </Grid.Column>
-    {/* <Grid.Column width={10}>
-      <Segment>
-        <Header>State</Header>
-        <pre style={{ overflowX: 'auto' }}>
-          {JSON.stringify({ isLoading, value, results }, null, 2)}
-        </pre>
-        <Header>Options</Header>
-        <pre style={{ overflowX: 'auto' }}>
-          {JSON.stringify(source, null, 2)}
-        </pre>
-      </Segment>
-    </Grid.Column> */}
   </Grid>)
 }

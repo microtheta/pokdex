@@ -1,71 +1,115 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Container, Grid, Header, Card } from 'semantic-ui-react'
-import SearchBar from '@/components/SearchBar/SearchBar';
+
 import PokemonCard from '@/components/PokemonCard/PokemonCard';
 import RecentViewCard from '@/components/PokemonCard/RecentViewCard';
 import Placeholder from '@/components/Placeholder/Placeholder';
 import Loading from '@/components/PokemonCard/LoadingCard';
 import PokemonDetailsModal from '@/components/PokemonDetailsModal/PokemonDetailsModal';
+import PokemonSearch from '@/containers/PokemonSearch/PokemonSearch';
 
-const ThemingLayout = () => (
-  <Container style={{ marginTop: '2em' }}>
-    <Header as='h1' dividing>Pokédex</Header>
+import { useRouter } from 'next/router'
 
-    <Grid centered columns={15}>
-      <Grid.Column mobile={15} tablet={15} computer={15}>
-        <SearchBar placeholder='Search for your favorite pokémon... ' />
-      </Grid.Column>
-    </Grid>
+type ResultItem = {
+  title: string
+}
 
-    <Grid centered columns={15}>
-      <Grid.Column mobile={15} tablet={15} computer={15}>
-        <Placeholder.Welcome />
-      </Grid.Column>
-    </Grid>
-    
-    <Grid centered columns={15}>
-      <Grid.Column mobile={15} tablet={15} computer={15}>
-        <Placeholder.Notfound />
-      </Grid.Column>
-    </Grid>
+type displayList = {
+  list?: ResultItem[],
+  query?: string,
+}
 
-    <Grid centered columns={15}>
-    <Grid.Column mobile={15} tablet={5} computer={5}>
-        <Loading />
-      </Grid.Column>
-    </Grid>
+type ParamType = {
+  selected?: string
+}
 
-    <Grid centered columns={15} >
-      <Grid.Column mobile={15} tablet={5} computer={5}>
-        <PokemonCard />
-      </Grid.Column>
-      <Grid.Column mobile={15} tablet={5} computer={5}>
-        <PokemonCard />
-      </Grid.Column>
-      <Grid.Column mobile={15} tablet={5} computer={5}>
-        <PokemonCard />
-      </Grid.Column>
-    </Grid>
+const Pokedex = () => {
 
-    <Grid centered columns={15}>
-      <Grid.Column mobile={15} tablet={15} computer={15}>
-        <Header as='h3' >Recently viewed</Header>
-        <Card.Group doubling itemsPerRow={6}>
-          <RecentViewCard />
-          <RecentViewCard />
-          <RecentViewCard />
-          <RecentViewCard />
-          <RecentViewCard />
-          <RecentViewCard />
-          <RecentViewCard />
-        </Card.Group>
-      </Grid.Column>
-    </Grid>
+  const router = useRouter();
 
-    <PokemonDetailsModal />
+  const { selected } = router.query as ParamType;
+
+  const [displayList, setDisplayList] = useState<displayList>({});
 
 
-  </Container >
-)
+  const updateParams = (selected?: string) => {
+    const query: ParamType = {};
+    if (selected) {
+      query.selected = selected
+    }
+    router.push({
+      pathname: '/semantic', query
+    }, undefined, { shallow: true })
+  }
 
-export default ThemingLayout
+  const handleSearchResult = (result: displayList, triggerDetails: boolean) => {
+    setDisplayList(result);
+    updateParams(triggerDetails ? result?.list && result?.list[0]?.title : '')
+  }
+
+  return (
+    <Container style={{ marginTop: '2em' }}>
+      <Header as='h1' dividing>Pokédex</Header>
+
+      <Grid centered columns={15}>
+        <Grid.Column mobile={15} tablet={15} computer={15}>
+          <PokemonSearch onSearch={handleSearchResult} />
+        </Grid.Column>
+      </Grid>
+
+      {!displayList.query &&
+        <Grid centered columns={15}>
+          <Grid.Column mobile={15} tablet={15} computer={15}>
+            <Placeholder.Welcome />
+          </Grid.Column>
+        </Grid>
+      }
+
+      {displayList.query && displayList.list && displayList.list.length < 1 &&
+        <Grid centered columns={15}>
+          <Grid.Column mobile={15} tablet={15} computer={15}>
+            <Placeholder.Notfound />
+          </Grid.Column>
+        </Grid>
+      }
+
+      {displayList.query && displayList.list && displayList.list.length > 0 &&
+        <Grid centered columns={15}>
+          {displayList.list.map(item => (
+            <Grid.Column key={item.title} mobile={15} tablet={5} computer={5}>
+              <PokemonCard name={item.title} />
+            </Grid.Column>
+          ))
+          }
+        </Grid>
+      }
+
+      <Grid centered columns={15}>
+        <Grid.Column mobile={15} tablet={5} computer={5}>
+          <Loading />
+        </Grid.Column>
+      </Grid>
+
+      <Grid centered columns={15}>
+        <Grid.Column mobile={15} tablet={15} computer={15}>
+          <Header as='h3' >Recently viewed</Header>
+          <Card.Group doubling itemsPerRow={6}>
+            <RecentViewCard />
+            <RecentViewCard />
+            <RecentViewCard />
+            <RecentViewCard />
+            <RecentViewCard />
+            <RecentViewCard />
+            <RecentViewCard />
+          </Card.Group>
+        </Grid.Column>
+      </Grid>
+
+      <PokemonDetailsModal />
+
+
+    </Container >
+  )
+}
+
+export default Pokedex

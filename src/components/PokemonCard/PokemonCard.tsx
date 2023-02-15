@@ -3,14 +3,14 @@ import { Card, Icon, Image, List, Header, Label, Divider } from 'semantic-ui-rea
 import styles from './PokemonCard.module.scss';
 
 
-const PokemonCard = () => (
+const PokemonCard = ({ name }: { name: string }) => (
   <div className={styles.flipCard}>
     <div className={styles.flipCardInner}>
       <div className={styles.flipCardFront}>
         <Card fluid >
           <Image fluid className={styles.cardImage} src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg' wrapped ui={false} alt="image" />
           <Card.Content className={styles.details}>
-            <Card.Header>name</Card.Header>
+            <Card.Header>{name}</Card.Header>
             <Card.Meta>
               <span>species.name</span>
             </Card.Meta>
@@ -33,7 +33,7 @@ const PokemonCard = () => (
 
             </Card.Description>
           </Card.Content>
-           <Card.Content extra  className={styles.extraContent}>
+          <Card.Content extra className={styles.extraContent}>
             <a>
               <Icon name='hashtag' />
               28
@@ -44,7 +44,7 @@ const PokemonCard = () => (
       <div className={styles.flipCardBack}>
         <Card fluid>
           <Card.Content className={styles.meta}>
-            
+
             <Image
               floated='left'
               size='mini'
@@ -53,7 +53,7 @@ const PokemonCard = () => (
             />
             <Card.Header>Steve Sanders</Card.Header>
             <Card.Meta>Friends of Elliot</Card.Meta>
-            
+
             <Card.Description className={styles.stats}>
               <Divider horizontal>
                 <Header as='h4'>
