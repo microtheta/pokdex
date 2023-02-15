@@ -1,31 +1,26 @@
-import { PokemonDetails } from '@/services/pokemonType';
+import { PokemonDetails } from '@/shared/pokemon.type';
 import React from 'react'
-import { Card, Icon, Image, List, Header, Label, Divider } from 'semantic-ui-react'
+import { Card, Icon, Image, List, Header, Label, Divider } from 'semantic-ui-react';
+import { getImageSrc } from '@/utils/pokemonImage';
 import styles from './PokemonCard.module.scss';
 
 
 const PokemonCard = ({
-  data
+  data,
+  onClick
 }: {
-  data?: PokemonDetails
+  data?: PokemonDetails,
+  onClick?: Function
 }) => {
 
-  const imageSrc = () => {
-    const imgs = data?.sprites.other;
-    if (imgs?.dream_world.front_default) {
-      return imgs?.dream_world.front_default
-    }
-    else if (imgs?.['official-artwork'].front_default) {
-      return imgs?.['official-artwork'].front_default
-    }
-  }
+
 
   return (
-    <div className={styles.flipCard}>
+    <div onClick={() => onClick ? onClick() : ''} className={styles.flipCard}>
       <div className={styles.flipCardInner}>
         <div className={styles.flipCardFront}>
           <Card fluid >
-            <Image fluid className={styles.cardImage} src={imageSrc()} wrapped ui={false} alt={data?.name} />
+            <Image fluid className={styles.cardImage} src={getImageSrc(data)} wrapped ui={false} alt={data?.name} />
             <Card.Content className={styles.details}>
               <Card.Header className={styles.name}>{data?.name}</Card.Header>
               <Card.Meta>
@@ -64,7 +59,7 @@ const PokemonCard = ({
               <Image
                 floated='left'
                 size='mini'
-                src={imageSrc()}
+                src={getImageSrc(data)}
                 alt={data?.name}
               />
               <Card.Header className={styles.name}>{data?.name}</Card.Header>
@@ -93,7 +88,7 @@ const PokemonCard = ({
                 </List>
               </Card.Description>
             </Card.Content>
-          
+
           </Card>
         </div>
       </div>

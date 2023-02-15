@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { ListType, PokemonDetails } from "./pokemonType";
+import { ListType, PokemonDetails } from "../shared/pokemon.type";
 
 
 const fetchPokemonList: () => Promise<AxiosResponse<ListType>> = async () => {

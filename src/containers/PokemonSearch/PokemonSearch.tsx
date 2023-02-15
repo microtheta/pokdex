@@ -4,19 +4,10 @@ import usePokemonList from '@/hooks/usePokemonList';
 import PageLoader from '@/components/PageLoader/PageLoader';
 import { useState } from 'react';
 import useDebounce from '@/hooks/useDebounce';
-
-type SearchResultType = {
-  title: string
-}
-
-
-type displayListType = {
-  list?: SearchResultType[],
-  query?: string,
-}
+import { ResultItem, DisplayListType } from '@/shared/pokemon.type';
 
 type PokemonSearchProps = {
-  onSearch?: (result: displayListType, triggerDetails: boolean) => void,
+  onSearch?: (result: DisplayListType, triggerDetails: boolean) => void,
   maxResults?: number
 }
 
@@ -35,7 +26,7 @@ export default function PokemonSearch({
   }
 
   const handleFilter = (query: string) => {
-    console.log('searching for', query)
+
     setResults(() => {
       if (query.length < 1) {
         return []
@@ -68,13 +59,16 @@ export default function PokemonSearch({
     setSearchQuery(data.result.title);
     setResults([data.result])
     onSearch({ query: data.result.title, list: [data.result] }, true)
-
+    setTimeout(() => {
+      const activeElem = document.activeElement as HTMLElement;
+      activeElem?.blur()
+    },0)
   }
 
-  const handleSearch = (e: any, results: SearchResultType[]) => {
+  const handleSearch = (e: any, results: ResultItem[]) => {
 
     const list = getFilteredList(searchQuery)
-    onSearch({ query: searchQuery, list: list.slice(0, maxResults) }, list.length === 1)
+    onSearch({ query: searchQuery, list: list.slice(0, maxResults) }, false) //list.length === 1
 
   }
 

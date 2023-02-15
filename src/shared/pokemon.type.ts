@@ -25,7 +25,7 @@ export interface PokemonDetails {
   weight: number;
 }
 export interface AbilitiesEntity {
-  ability: NameUrlEntry[]
+  ability: NameUrlEntry
   is_hidden: boolean;
   slot: number;
 }
@@ -59,4 +59,14 @@ export interface StatsEntity {
 export interface TypesEntity {
   slot: number;
   type: NameUrlEntry;
+}
+
+
+export type ResultItem = {
+  title: string
+}
+
+export type DisplayListType = {
+  list?: ResultItem[],
+  query?: string,
 }

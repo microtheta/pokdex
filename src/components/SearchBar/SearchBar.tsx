@@ -42,9 +42,9 @@ export default function SearchBar({
         value={value}
         placeholder={placeholder}
         showNoResults={!loading}
-        onBlur={(event) => {
+        /* onBlur={(event) => { //TODO: trigger search on blur??
           onSearch(event, results)
-        }}
+        }} */
         input={{
           onKeyPress: (event: React.KeyboardEvent) => {
             if (event.key === 'Enter' && searchRef.current) {

@@ -2,7 +2,7 @@ import React from 'react'
 import { Dimmer, Loader } from 'semantic-ui-react'
 import styles from './PageLoader.module.scss';
 
-const LoaderExampleSizesInverted = () => (
+const PageLoader = () => (
   <div className={styles.page}>
     <Dimmer active inverted>
       <Loader size='large'>Loading</Loader>
@@ -10,4 +10,4 @@ const LoaderExampleSizesInverted = () => (
   </div>
 )
 
-export default LoaderExampleSizesInverted
+export default PageLoader

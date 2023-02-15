@@ -1,0 +1,29 @@
+.name {
+  text-transform: capitalize;
+  padding: 20px;
+}
+.image {
+  :global img {
+    margin: auto;
+  }
+}
+.row {
+  display: flex;
+  font-size: 1.3em;
+  margin-bottom: 1em;
+  flex-wrap: wrap;
+}
+.col {
+  display: flex;
+}
+.label {
+  font-weight: bold;
+  margin-left: 20px;
+}
+.value {
+  text-transform: capitalize;
+  margin: 0 10px;
+}
+.list {
+  margin-left: 20px;
+}

@@ -1,22 +1,11 @@
-import React, { useState } from 'react'
-import { Container, Grid, Header, Card } from 'semantic-ui-react'
-
-import PokemonDetails from '@/containers/PokemonDetails/PokemonDetails';
+import React, { useState } from 'react';
+import { Container, Grid, Header, Card } from 'semantic-ui-react';
 import RecentViewCard from '@/components/PokemonCard/RecentViewCard';
-import Placeholder from '@/components/Placeholder/Placeholder';
-import PokemonDetailsModal from '@/components/PokemonDetailsModal/PokemonDetailsModal';
+import PokemonDetailsModal from '@/containers/PokemonDetailsModal/PokemonDetailsModal';
 import PokemonSearch from '@/containers/PokemonSearch/PokemonSearch';
-
-import { useRouter } from 'next/router'
-
-type ResultItem = {
-  title: string
-}
-
-type displayList = {
-  list?: ResultItem[],
-  query?: string,
-}
+import { useRouter } from 'next/router';
+import { DisplayListType } from '@/shared/pokemon.type';
+import PokemonSearchResult from '@/components/PokemonSearchResult/PokemonSearchResult';
 
 type ParamType = {
   selected?: string
@@ -28,7 +17,7 @@ const Pokedex = () => {
 
   const { selected } = router.query as ParamType;
 
-  const [displayList, setDisplayList] = useState<displayList>({});
+  const [displayList, setDisplayList] = useState<DisplayListType>({});
 
 
   const updateParams = (selected?: string) => {
@@ -41,7 +30,7 @@ const Pokedex = () => {
     }, undefined, { shallow: true })
   }
 
-  const handleSearchResult = (result: displayList, triggerDetails: boolean) => {
+  const handleSearchResult = (result: DisplayListType, triggerDetails: boolean) => {
     setDisplayList(result);
     updateParams(triggerDetails ? result?.list && result?.list[0]?.title : '')
   }
@@ -56,32 +45,7 @@ const Pokedex = () => {
         </Grid.Column>
       </Grid>
 
-      {!displayList.query &&
-        <Grid centered columns={15}>
-          <Grid.Column mobile={15} tablet={15} computer={15}>
-            <Placeholder.Welcome />
-          </Grid.Column>
-        </Grid>
-      }
-
-      {displayList.query && displayList.list && displayList.list.length < 1 &&
-        <Grid centered columns={15}>
-          <Grid.Column mobile={15} tablet={15} computer={15}>
-            <Placeholder.Notfound />
-          </Grid.Column>
-        </Grid>
-      }
-
-      {displayList.query && displayList.list && displayList.list.length > 0 &&
-        <Grid centered columns={15}>
-          {displayList.list.map(item => (
-            <Grid.Column key={item.title} mobile={15} tablet={5} computer={5}>
-              <PokemonDetails name={item.title} />
-            </Grid.Column>
-          ))
-          }
-        </Grid>
-      }
+      <PokemonSearchResult displayList={displayList} onSelect={(name?: string) => updateParams(name)} />
 
       <Grid centered columns={15}>
         <Grid.Column mobile={15} tablet={15} computer={15}>
@@ -99,8 +63,7 @@ const Pokedex = () => {
         </Grid.Column>
       </Grid>
 
-      <PokemonDetailsModal />
-
+      <PokemonDetailsModal name={selected} onClose={updateParams} />
 
     </Container >
   )
