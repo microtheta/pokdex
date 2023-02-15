@@ -16,11 +16,13 @@ type displayListType = {
 }
 
 type PokemonSearchProps = {
-  onSearch?: (result: displayListType, triggerDetails: boolean) => void
+  onSearch?: (result: displayListType, triggerDetails: boolean) => void,
+  maxResults?: number
 }
 
 export default function PokemonSearch({
   onSearch = () => { },
+  maxResults = 3
 }: PokemonSearchProps) {
   const { isLoading, data } = usePokemonList();
 
@@ -28,13 +30,17 @@ export default function PokemonSearch({
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<{ title: string }[]>([]);
 
+  const getFilteredList = (query: string) => {
+    return data?.filter((s) => s.title.toLocaleLowerCase().startsWith(query.toLocaleLowerCase())) || []
+  }
+
   const handleFilter = (query: string) => {
     console.log('searching for', query)
     setResults(() => {
       if (query.length < 1) {
         return []
       }
-      const list = data?.filter((s) => s.title.toLocaleLowerCase().startsWith(query.toLocaleLowerCase())) || []
+      const list = getFilteredList(query)
       return list.slice(0, 5);
     })
     setIsSearching(false);
@@ -59,9 +65,7 @@ export default function PokemonSearch({
 
 
   const handleResultSelect = (e: any, data: any) => {
-    console.log('resultSelect')
     setSearchQuery(data.result.title);
-    console.log('display card for and open modal', [data.result])
     setResults([data.result])
     onSearch({ query: data.result.title, list: [data.result] }, true)
 
@@ -69,10 +73,9 @@ export default function PokemonSearch({
 
   const handleSearch = (e: any, results: SearchResultType[]) => {
 
-    const list = results.slice(0, 3);
-    onSearch({ query: searchQuery, list }, list.length === 1)
+    const list = getFilteredList(searchQuery)
+    onSearch({ query: searchQuery, list: list.slice(0, maxResults) }, list.length === 1)
 
-    console.log('display search for', results.slice(0, 3))
   }
 
   if (isLoading) {

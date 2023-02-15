@@ -3,16 +3,23 @@
   height: 200px !important;
   :global img {
     height: 100% !important;
+    width: auto !important;
+    max-width: 100%;
+    margin: auto;
   }
 }
 .details {
   height: 100px;
 }
+.name {
+  text-transform: capitalize;
+}
 .extraContent {
   height: 40px;
 }
 .stats {
-  height: 280px;
+  height: 265px;
+  padding: 10px;
   overflow: auto;
 }
 .meta {
@@ -23,6 +30,9 @@
   height: 100px;
   :global img {
     height: 100% !important;
+    max-width: 100%;
+    width: auto !important;
+    margin: auto;
   }
 }
 .flipCard {
