@@ -15,7 +15,7 @@ export default function PokemonSearch({
   onSearch = () => { },
   maxResults = 3
 }: PokemonSearchProps) {
-  const { isLoading, data } = usePokemonList();
+  const { isLoading, data, isError } = usePokemonList();
 
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -66,14 +66,16 @@ export default function PokemonSearch({
   }
 
   const handleSearch = (e: any, results: ResultItem[]) => {
-
     const list = getFilteredList(searchQuery)
     onSearch({ query: searchQuery, list: list.slice(0, maxResults) }, false) //list.length === 1
-
   }
 
   if (isLoading) {
     return <PageLoader />
+  }
+
+  if(isError) {
+    return <div>There was an error while fetching the data.</div>
   }
 
   return <SearchBar

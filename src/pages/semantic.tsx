@@ -76,7 +76,7 @@ const Pokedex = () => {
       {recentViewed.length > 0 &&
         <Grid centered columns={15}>
           <Grid.Column mobile={15} tablet={15} computer={15}>
-            <Header as='h3' >Recently viewed</Header>
+            <Header as='h3'>Recently viewed</Header>
             <Card.Group doubling itemsPerRow={8}>
               {
                 recentViewed.map(item => <PokemonRecentCard key={item} name={item} onSelect={handleSelect} />)
@@ -88,7 +88,7 @@ const Pokedex = () => {
 
       <PokemonDetailsModal name={selected} onClose={updateParams} />
 
-    </Container >
+    </Container>
   )
 }
 
