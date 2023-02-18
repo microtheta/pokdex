@@ -75,7 +75,7 @@ export default function PokemonSearch({
   }
 
   if (isError) {
-    return <Message negative>  <Message.Header>Unable to fetch data. Please try after sometime.</Message.Header></Message>
+    return <Message negative><Message.Header role='search-bar-error'>Unable to fetch data. Please try after sometime.</Message.Header></Message>
   }
 
   return <SearchBar

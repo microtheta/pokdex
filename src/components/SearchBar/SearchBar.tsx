@@ -31,6 +31,8 @@ export default function SearchBar({
   return (<Grid>
     <Grid.Column width={16}>
       <Search
+        role="search-bar-input"
+        test-id="search-bar"
         ref={searchRef}
         className={styles.searchBar}
         fluid
