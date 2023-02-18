@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, TransitionablePortal, Segment } from 'semantic-ui-react'
+import { Modal, TransitionablePortal, Segment, Header } from 'semantic-ui-react'
 import usePokemonDetails from "@/hooks/usePokemonDetails";
 import PokemonDetailsView from '@/components/PokemonDetails/PokemonDetails';
 
 
-function PokemonDetails({
+function DetailsView({
   name
 }: { name: string }) {
-  const { isLoading, data } = usePokemonDetails(name);
+  const { isLoading, data, isError } = usePokemonDetails(name);
 
   if (isLoading) {
     return (<Segment loading style={{ height: 150, margin: 0 }} />)
   }
 
+  if(isError) {
+    return <Header as='h4'>Error in fetching data.</Header>
+  }
+
   return (
-    <>
-      <PokemonDetailsView data={data} />
-    </>
+    <PokemonDetailsView data={data} />
   )
 }
 
@@ -32,22 +34,17 @@ function PokemonDetailsModal({
     setOpen(!!name)
   }, [name])
 
-
-
   return (
-    <div>
-      <TransitionablePortal onOpen={() => setTimeout(() => document.body.classList.add('modal-fade-in'), 0)} open={open} >
-        <Modal
-          closeIcon
-          open
-          closeOnDimmerClick={false}
-          onClose={() => { document.body.classList.remove('modal-fade-in'); onClose(); }}
-        >
-          {name && <PokemonDetails key={name} name={name} />}
-        </Modal>
-      </TransitionablePortal>
-
-    </div>
+    <TransitionablePortal onOpen={() => setTimeout(() => document.body.classList.add('modal-fade-in'), 0)} open={open} >
+      <Modal
+        closeIcon
+        open
+        closeOnDimmerClick={false}
+        onClose={() => { document.body.classList.remove('modal-fade-in'); onClose(); }}
+      >
+        {name && <DetailsView key={name} name={name} />}
+      </Modal>
+    </TransitionablePortal>
   )
 }
 

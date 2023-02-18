@@ -6,7 +6,7 @@ jest.mock('react-query', () => ({
   useQuery: jest.fn().mockReturnValue(({ data: { a:1 }, isLoading: false, error: {} }))
 }));
 
-import Page from '../pages/semantic'
+import Page from '../pages'
 import '@testing-library/jest-dom'
 
 describe('Home', () => {

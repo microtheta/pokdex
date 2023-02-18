@@ -1,10 +1,11 @@
 
-import SearchBar from '@/components/SearchBar/SearchBar';
-import usePokemonList from '@/hooks/usePokemonList';
-import PageLoader from '@/components/PageLoader/PageLoader';
 import { useState } from 'react';
+import { Message, SearchResultData, SearchProps } from 'semantic-ui-react';
+import SearchBar from '@/components/SearchBar/SearchBar';
+import PageLoader from '@/components/PageLoader/PageLoader';
+import usePokemonList from '@/hooks/usePokemonList';
 import useDebounce from '@/hooks/useDebounce';
-import { ResultItem, DisplayListType } from '@/shared/pokemon.type';
+import { DisplayListType } from '@/shared/pokemon.type';
 
 type PokemonSearchProps = {
   onSearch?: (result: DisplayListType, triggerDetails: boolean) => void,
@@ -39,9 +40,8 @@ export default function PokemonSearch({
 
   const searchFn = useDebounce(handleFilter)
 
-
-  const handleSearchChange = (e: any, { value }: any) => {
-
+  const handleSearchChange = (e: any, data: SearchProps) => {
+    const { value = '' } = data;
     setIsSearching(true);
     setSearchQuery(value);
     //when search is cleared, remove results immediately else debounce searching
@@ -54,18 +54,18 @@ export default function PokemonSearch({
 
   }
 
-
-  const handleResultSelect = (e: any, data: any) => {
+  const handleResultSelect = (e: any, data: SearchResultData) => {
     setSearchQuery(data.result.title);
     setResults([data.result])
     onSearch({ query: data.result.title, list: [data.result] }, true)
     setTimeout(() => {
       const activeElem = document.activeElement as HTMLElement;
       activeElem?.blur()
-    },0)
+    }, 0)
   }
 
-  const handleSearch = (e: any, results: ResultItem[]) => {
+  //Called when enter key is pressed
+  const handleSearch = () => {
     const list = getFilteredList(searchQuery)
     onSearch({ query: searchQuery, list: list.slice(0, maxResults) }, false) //list.length === 1
   }
@@ -74,8 +74,8 @@ export default function PokemonSearch({
     return <PageLoader />
   }
 
-  if(isError) {
-    return <div>There was an error while fetching the data.</div>
+  if (isError) {
+    return <Message negative>  <Message.Header>Unable to fetch data. Please try after sometime.</Message.Header></Message>
   }
 
   return <SearchBar

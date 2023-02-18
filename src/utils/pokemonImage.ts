@@ -8,4 +8,7 @@ export const getImageSrc = (data?: PokemonDetails) => {
   else if (imgs?.['official-artwork'].front_default) {
     return imgs?.['official-artwork'].front_default
   }
+  else {
+    return '/no_image.png'
+  }
 }

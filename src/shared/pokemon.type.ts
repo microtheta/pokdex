@@ -3,12 +3,6 @@ export interface NameUrlEntry {
   name: string,
   url: string,
 }
-
-export interface ListType {
-  count: number,
-  results: NameUrlEntry[]
-}
-
 export interface PokemonDetails {
   abilities?: AbilitiesEntity[];
   base_experience: number;
@@ -69,4 +63,9 @@ export type ResultItem = {
 export type DisplayListType = {
   list?: ResultItem[],
   query?: string,
+}
+
+export interface ListType {
+  count: number,
+  results: NameUrlEntry[]
 }
