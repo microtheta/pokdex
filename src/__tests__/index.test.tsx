@@ -1,11 +1,9 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-
-import * as reactQuery from 'react-query';
-
-import '@testing-library/jest-dom';
 import Page from '../pages';
 import { UseQueryResult } from 'react-query';
+import * as reactQuery from 'react-query';
+import '@testing-library/jest-dom';
 
 jest.mock('next/router', () => require('next-router-mock'));
 jest.mock('react-query')
@@ -27,7 +25,22 @@ const mockedUseQuery = (key: unknown) => {
             front_default: 'img'
           }
         }
-      }
+      },
+      types: [{
+        type: {
+          name: 'baltoy'
+        }
+      }],
+      abilities: [{
+        ability: {
+          name: 'attack'
+        }
+      }],
+      stats: [{
+        stat: {
+          name: 'hp'
+        }
+      }]
     }, isLoading: false, isError: false
   } as unknown as UseQueryResult;
 }
@@ -35,6 +48,8 @@ useQuery.mockImplementation(mockedUseQuery)
 
 
 describe('Home Page', () => {
+
+  const user = userEvent.setup()
 
   describe('Basic page element', () => {
     it('renders a heading', () => {
@@ -65,7 +80,7 @@ describe('Home Page', () => {
 
     it('should display auto suggestions list when users type a name in search bar', async () => {
       useQuery.mockImplementation(mockedUseQuery)
-      const user = userEvent.setup()
+
       render(<Page />)
       const searchBar = screen.getByRole('search-bar-input');
       await fireEvent.focus(searchBar)
@@ -77,7 +92,6 @@ describe('Home Page', () => {
     })
 
     it('should display result card when user type and press enter in the search box', async () => {
-      const user = userEvent.setup()
       render(<Page />)
       const searchBar = screen.getByRole('search-bar-input');
       await fireEvent.focus(searchBar)
@@ -91,7 +105,6 @@ describe('Home Page', () => {
 
   describe('Search result details', () => {
     it('should open a modal pop when user clicks on result card', async () => {
-      const user = userEvent.setup()
       render(<Page />)
       const searchBar = screen.getByRole('search-bar-input');
       await fireEvent.focus(searchBar)
