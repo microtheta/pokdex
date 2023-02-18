@@ -8,6 +8,7 @@ import PokemonSearchResult from '@/components/PokemonSearchResult/PokemonSearchR
 
 import { DisplayListType } from '@/shared/pokemon.type';
 import RecentlyViewedList from '@/components/RecentlyViewedList/RecentlyViewedList';
+import Head from 'next/head';
 
 type ParamType = {
   selected?: string
@@ -61,25 +62,33 @@ const Pokedex = () => {
   }
 
   return (
-    <Container style={{ marginTop: '2em' }}>
-      <Header as='h1' dividing>Pokédex</Header>
+    <>
+      <Head>
+        <title>Pokédex</title>
+        <meta name="description" content="Pokédex - Search and view information about pokemon" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.png" />
+      </Head>
+      <Container style={{ marginTop: '2em' }}>
+        <Header as='h1' dividing>Pokédex</Header>
 
-      <Grid centered columns={15}>
-        <Grid.Column mobile={15} tablet={15} computer={15}>
-          <PokemonSearch onSearch={handleSearchResult} />
-        </Grid.Column>
-      </Grid>
+        <Grid centered columns={15}>
+          <Grid.Column mobile={15} tablet={15} computer={15}>
+            <PokemonSearch onSearch={handleSearchResult} />
+          </Grid.Column>
+        </Grid>
 
-      <PokemonSearchResult displayList={displayList} onSelect={handleSelect} />
-      
-      <Divider hidden />
-      <Divider hidden />
+        <PokemonSearchResult displayList={displayList} onSelect={handleSelect} />
 
-      <RecentlyViewedList recentViewed={recentViewed} handleSelect={handleSelect} />
+        <Divider hidden />
+        <Divider hidden />
 
-      <PokemonDetailsModal name={selected} onClose={updateParams} />
+        <RecentlyViewedList recentViewed={recentViewed} handleSelect={handleSelect} />
 
-    </Container>
+        <PokemonDetailsModal name={selected} onClose={updateParams} />
+
+      </Container>
+    </>
   )
 }
 
