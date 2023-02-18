@@ -35,11 +35,13 @@
     margin: auto;
   }
 }
-.flipCard {
-  cursor: pointer;
-  &:hover {
-    .flipCardInner {
-      transform: rotateY(180deg);
+@media (hover: hover) {
+  .flipCard {
+    cursor: pointer;
+    &:hover {
+      .flipCardInner {
+        transform: rotateY(180deg);
+      }
     }
   }
 }
