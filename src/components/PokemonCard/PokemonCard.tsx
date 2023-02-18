@@ -16,7 +16,7 @@ const PokemonCard = ({
 
 
   return (
-    <div onClick={() => onClick ? onClick() : ''} className={styles.flipCard}>
+    <div role='result-card' onClick={() => onClick ? onClick() : ''} className={styles.flipCard}>
       <div className={styles.flipCardInner}>
         <div className={styles.flipCardFront}>
           <Card fluid >

@@ -14,7 +14,7 @@ export default function PokemonDetails({
       <Modal.Content image>
         <Image size='medium' src={getImageSrc(data)} wrapped alt={data?.name} className={styles.image} />
         <Modal.Description>
-          <div className={styles.row}>
+          <div role='pokemon-details-view' className={styles.row}>
 
             <div className={styles.col}>
               <span className={styles.label}>Species</span>
