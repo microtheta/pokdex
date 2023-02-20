@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Page from '../pages';
+import Page from '@/pages';
 import { UseQueryResult } from 'react-query';
 import * as reactQuery from 'react-query';
 import '@testing-library/jest-dom';
