@@ -1,0 +1,21 @@
+
+.tweetCard {
+  display: flex;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-top: 1px solid lightgray;
+}
+.tweetUserImage {
+  margin-right: 5px;
+}
+.userName {
+  display: inline-block;
+  margin: 0px !important;
+}
+.newFeed {
+  margin-bottom: 10px;
+}
+.submitBtn {
+  display: flex;
+  justify-content: flex-end;
+}
